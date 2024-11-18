@@ -1,0 +1,115 @@
+syntax = "proto3";
+package uber;
+
+message DriverRegisterResponse {
+    string message = 1;
+}
+
+message NotificationRequest {
+    int32 id = 1;
+}
+
+message DriverNotificationResponse {
+    int32 ride_id=1;
+    string notification = 2;
+}
+
+message RiderNotificationResponse{
+    string notification=1;
+}
+
+message RegisterDriverRequest {
+    string name = 1;
+}
+
+message RegisterRiderRequest {
+    string name = 1; 
+}
+
+message RegisterResponse {
+    string message = 1; 
+    int32 id=2;
+}
+
+message RideRequest {
+    int32 rider_id=1;
+    string pickup = 2;
+    string destination = 3;
+}
+
+message RideResponse {
+    string message = 1;
+    int32 driver_id = 2;
+    bool success = 3;
+}
+
+message AcceptRideRequest{
+    int32 ride_id=1;
+}
+
+message AcceptRideResponse{
+    string message=1;
+}
+
+message RejectRideRequest{
+    int32 ride_id=1;
+}
+
+message RejectRideResponse{
+    string message=1;
+}
+
+message CompleteRideRequest{
+    int32 ride_id=1;
+    int32 driver_id=2;
+}
+
+message CompleteRideResponse{
+    string message=1;
+}
+
+message StatusRequest{
+    int32 rider_id=1;
+}
+
+message StatusResponse{
+    string driver_name=1;
+    string pickup=2;
+    string destination=3;
+    string status=4;
+    bool empty=5;
+}
+
+message ExitRequest{
+    string role=1;
+    int32 registered_id=2;
+}
+
+message ExitResponse{
+    string message=1;
+}
+
+message ServerNotificationRequest{
+    int32 driver_id=1;
+    int32 ride_id=2;
+    int32 server_port=3;
+    string notification=4;
+}
+
+message ServerNotificationResponse{
+    string message=1;
+}
+
+service RideService {
+    rpc DriverNotificationService(NotificationRequest) returns (stream DriverNotificationResponse);
+    rpc RiderNotificationService(NotificationRequest) returns (stream RiderNotificationResponse);
+    rpc RegisterDriver (RegisterDriverRequest) returns (RegisterResponse);
+    rpc RegisterRider (RegisterRiderRequest) returns (RegisterResponse);
+    rpc RequestRide(RideRequest) returns (RideResponse); 
+    rpc AcceptRide(AcceptRideRequest) returns (AcceptRideResponse);
+    rpc RejectRide(RejectRideRequest) returns (RejectRideResponse);
+    rpc CompleteRide(CompleteRideRequest) returns (CompleteRideResponse);
+    rpc GetRideStatus(StatusRequest) returns (StatusResponse);
+    rpc Exit(ExitRequest) returns (ExitResponse);
+    rpc ServerNotificationService(ServerNotificationRequest) returns (ServerNotificationResponse);
+}
